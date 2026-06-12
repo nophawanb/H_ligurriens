@@ -9,12 +9,6 @@ figures (Fig 1–4) and computes the inferential statistics reported in the
 manuscript. Every figure and statistic is produced deterministically from
 the processed data; no values are hand-edited.
 
-> Associated paper: *Proteomic and Lipidomic Characterization of
-> Hemipyrellia ligurriens Larval Whole-Body Extracts and
-> Excretory–Secretory Products: Identification of Putative Antimicrobial
-> Molecules and Preliminary Functional Assessment* (PLOS ONE,
-> manuscript ID PONE-D-26-13228).
-
 ## Contents
 
 ```
@@ -90,9 +84,3 @@ Most scripts accept `--dpi` and `--out`; the volcano additionally accepts
 - **Inhibition zones** — only published mean ± SD (n = 3) are available,
   so triplicates are reconstructed from mean and SD before ANOVA; the
   ANOVA is indicative rather than a re-analysis of raw measurements.
-
-## Citation
-
-Please cite the associated paper (above) when using this code. The mass
-spectrometry proteomics data are deposited at the ProteomeXchange / PRIDE
-repository (accession to be added on acceptance).
