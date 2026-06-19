@@ -260,13 +260,13 @@ def venn_panel(ax, we_only_n, both_n, es_only_n,
         lbl.set_visible(False)
         count_n = {"10": we_only_n, "01": es_only_n, "11": both_n}[sid]
         pct_v   = {"10": we_only_pct, "01": es_only_pct, "11": both_pct}[sid]
-        t1 = ax.text(x, y + 0.045 * span_y, f"{count_n:,}",
+        t1 = ax.text(x, y + 0.075 * span_y, f"{count_n:,}",
                      ha="center", va="center", fontsize=12,
                      fontweight="bold", color="white", zorder=5)
         t1.set_path_effects(text_stroke)
-        t2 = ax.text(x, y - 0.055 * span_y,
-                     f"{pct_v:.1f}%" + (" shared" if sid == "11" else ""),
-                     ha="center", va="center", fontsize=9,
+        t2 = ax.text(x, y - 0.085 * span_y,
+                     f"{pct_v:.1f}%",
+                     ha="center", va="center", fontsize=8,
                      color="#1A2330", zorder=5, fontweight="bold")
         t2.set_path_effects(pct_stroke)
 
