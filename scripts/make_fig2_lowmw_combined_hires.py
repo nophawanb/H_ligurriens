@@ -543,11 +543,11 @@ def render(dpi: int, out: Path) -> None:
     # Bottom legend
     ax_legend.axis("off")
     items_main = [
-        (0.05, C_WE,     "WE only"),
-        (0.18, C_SHARED, "Shared (WE ∩ ES)"),
-        (0.36, C_ES,     "ES only"),
-        (0.54, C_CHAR,   "Characterized"),
-        (0.72, C_UNCHAR, "Uncharacterized"),
+        (0.01, C_WE,     "WE only"),
+        (0.15, C_SHARED, "Shared (WE ∩ ES)"),
+        (0.39, C_ES,     "ES only"),
+        (0.53, C_CHAR,   "Characterized"),
+        (0.73, C_UNCHAR, "Uncharacterized"),
     ]
     for x, color, label in items_main:
         ax_legend.add_patch(Rectangle(
@@ -555,7 +555,7 @@ def render(dpi: int, out: Path) -> None:
             transform=ax_legend.transAxes, clip_on=False))
         ax_legend.text(x + 0.025, 0.50, label,
                        transform=ax_legend.transAxes, ha="left", va="center",
-                       fontsize=11, color=INK)
+                       fontsize=9, color=INK)
 
     out.parent.mkdir(parents=True, exist_ok=True)
     plt.savefig(out, dpi=dpi, bbox_inches="tight",
