@@ -240,13 +240,14 @@ def main() -> None:
                     help="axis x/y label font size (default 16; orig 12)")
     ap.add_argument("--tick-fontsize", type=float, default=11,
                     help="axis tick-number font size (default 14; orig 11)")
-    ap.add_argument("--no-heading", action="store_true",
-                    help="omit the figure title (for embedding as a panel)")
+    ap.add_argument("--heading", action="store_true",
+                    help="include the figure title (off by default; the "
+                         "title belongs in the figure caption)")
     args = ap.parse_args()
 
     df = build_dataframe()
     render(df, args.dpi, args.out, args.label_fontsize, args.tick_fontsize,
-           heading=not args.no_heading)
+           heading=args.heading)
 
 
 if __name__ == "__main__":
