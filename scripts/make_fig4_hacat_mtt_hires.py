@@ -121,17 +121,8 @@ def render(dpi: int, out: Path) -> None:
     draw_series(ax, es_x, es_m, es_s, es_r, es_p, C_ES, "s",
                 sig_va="top",    sig_offset=-1.0)
 
-    LABEL_X = 200
-    ax.text(LABEL_X, 100, "100 % untreated baseline",
-            ha="center", va="center", fontsize=9, color=SUB_INK,
-            fontstyle="italic",
-            bbox=dict(boxstyle="round,pad=0.30",
-                      facecolor="white", edgecolor="none"), zorder=2)
-    ax.text(LABEL_X, 80, "80 % cytotoxicity threshold",
-            ha="center", va="center", fontsize=9, color="#B85569",
-            fontstyle="italic",
-            bbox=dict(boxstyle="round,pad=0.30",
-                      facecolor="white", edgecolor="none"), zorder=2)
+    # Reference-line descriptions are placed in the legend (below) instead
+    # of floating in-plot, where they overlapped the 100 ug/mL data points.
 
     ax.set_xscale("log")
     ax.set_xlim(0.06, 280)
@@ -160,14 +151,18 @@ def render(dpi: int, out: Path) -> None:
     ax.plot([], [], "-s", color=C_ES, markersize=8,
             markerfacecolor=C_ES, markeredgecolor="white",
             markeredgewidth=1.2, lw=1.8, label="ES (excretory–secretory)")
+    ax.plot([], [], color="#1F2D3D", lw=1.0, ls="--",
+            label="100 % untreated baseline")
+    ax.plot([], [], color="#B85569", lw=0.9, ls=":",
+            label="80 % cytotoxicity threshold")
     ax.legend(loc="upper center", bbox_to_anchor=(0.5, -0.16),
-              ncol=2, frameon=False, fontsize=10.5,
-              handlelength=2.4, handletextpad=0.6, columnspacing=2.5)
+              ncol=2, frameon=False, fontsize=9.5,
+              handlelength=2.4, handletextpad=0.6, columnspacing=2.0)
 
     # Significance-key footer (kept: explains on-plot markers). Only the
     # markers actually present in this figure are listed; ** (P<0.01) and
     # **** (P<0.0001) do not occur here and are omitted per request.
-    ax.text(0.5, -0.27,
+    ax.text(0.5, -0.42,
             "*  P < 0.05      ***  P < 0.001      ns: non-significant      "
             "Open circles = individual biological-replicate values (n = 3)",
             transform=ax.transAxes, ha="center", va="top",
