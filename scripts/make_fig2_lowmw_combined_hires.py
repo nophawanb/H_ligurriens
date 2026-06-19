@@ -15,7 +15,7 @@ the established hi-res criteria used across the figure set:
      union-n, bar %, KDE median, lollipop n, legend strip) are KEPT.
   3. Uses repo-relative paths (the original hard-codes another machine's
      absolute path) and writes a SEPARATE output file
-     (`figures/Fig2_lowmw_combined_600dpi.tif`), never touching the
+     (`figures/Fig2_lowmw_combined.tif`), never touching the
      320-dpi original consumed downstream.
 
 Usage:
@@ -261,7 +261,7 @@ def venn_panel(ax, we_only_n, both_n, es_only_n,
         count_n = {"10": we_only_n, "01": es_only_n, "11": both_n}[sid]
         pct_v   = {"10": we_only_pct, "01": es_only_pct, "11": both_pct}[sid]
         t1 = ax.text(x, y + 0.045 * span_y, f"{count_n:,}",
-                     ha="center", va="center", fontsize=14,
+                     ha="center", va="center", fontsize=12,
                      fontweight="bold", color="white", zorder=5)
         t1.set_path_effects(text_stroke)
         t2 = ax.text(x, y - 0.055 * span_y,
@@ -371,7 +371,7 @@ def render(dpi: int, out: Path) -> None:
         "ps.fonttype": 42,
     })
 
-    fig = plt.figure(figsize=(13.0, 16.5), dpi=dpi)
+    fig = plt.figure(figsize=(6.9, 8.75), dpi=dpi)
     fig.patch.set_facecolor("white")
     # Master heading (suptitle + subtitle) omitted (per request).
 
@@ -572,9 +572,9 @@ def render(dpi: int, out: Path) -> None:
 
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--dpi", type=int, default=600)
+    ap.add_argument("--dpi", type=int, default=300)
     ap.add_argument("--out", type=Path,
-                    default=ROOT / "figures" / "Fig2_lowmw_subset_family_composition_600dpi.tif")
+                    default=ROOT / "figures" / "Fig2_lowmw_subset_family_composition.tif")
     args = ap.parse_args()
     render(args.dpi, args.out)
 

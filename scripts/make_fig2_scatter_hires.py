@@ -10,7 +10,7 @@ use as a composed panel / for journals that set titles and keys in the
 caption rather than on the artwork).
 
 Non-destructive: writes a separate output file (default
-`figures/Fig2_scatter_600dpi.tif`) and never touches the 320-dpi
+`figures/Fig2_scatter.tif`) and never touches the 320-dpi
 `figures/Fig2_scatter.png` consumed by the HTML pipeline.
 
 Usage:
@@ -84,7 +84,7 @@ def render(df: pd.DataFrame, dpi: int, out: Path,
         "axes.spines.right": False,
     })
 
-    fig, ax = plt.subplots(figsize=(8, 7.6))
+    fig, ax = plt.subplots(figsize=(7.5, 7.1))
     both = df[(df["WE"] > 0) & (df["ES"] > 0)].copy()
     x = np.log10(both["WE"]); y = np.log10(both["ES"])
     xy = np.vstack([x, y])
@@ -146,11 +146,11 @@ def render(df: pd.DataFrame, dpi: int, out: Path,
 
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--dpi", type=int, default=600)
+    ap.add_argument("--dpi", type=int, default=300)
     ap.add_argument("--out", type=Path,
-                    default=FIG_DIR / "Fig2_scatter_600dpi.tif")
-    ap.add_argument("--label-fontsize", type=float, default=15)
-    ap.add_argument("--tick-fontsize", type=float, default=13)
+                    default=FIG_DIR / "Fig2_scatter.tif")
+    ap.add_argument("--label-fontsize", type=float, default=12)
+    ap.add_argument("--tick-fontsize", type=float, default=10)
     args = ap.parse_args()
     render(build_dataframe(), args.dpi, args.out,
            args.label_fontsize, args.tick_fontsize)

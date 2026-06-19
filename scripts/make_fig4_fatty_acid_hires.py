@@ -13,7 +13,7 @@ Fig 1 / Fig 2 / Fig 3 / Fig 4 (HaCaT MTT):
      legend are KEPT (panel structure + data, not redundant overlays).
   3. Uses repo-relative paths (the original hard-codes another machine's
      absolute path) and writes a SEPARATE output file
-     (`figures/Fig4_fatty_acid_600dpi.tif`), never touching the 320-dpi
+     (`figures/Fig4_fatty_acid.tif`), never touching the 320-dpi
      `figures/Fig4_fatty_acid.png` consumed downstream.
 
 Usage:
@@ -106,7 +106,7 @@ def render(dpi: int, out: Path) -> None:
         "ps.fonttype": 42,
     })
 
-    fig = plt.figure(figsize=(13.0, 9.5), dpi=dpi)
+    fig = plt.figure(figsize=(7.5, 5.5), dpi=dpi)
     fig.patch.set_facecolor("white")
     gs = gridspec.GridSpec(
         nrows=1, ncols=2,
@@ -127,14 +127,14 @@ def render(dpi: int, out: Path) -> None:
     ax.text(0, 0.18, "Total identified FA",
             ha="center", va="center", fontsize=10, color=SUB_INK)
     ax.text(0, 0.00, f"{total_fa:.2f} %",
-            ha="center", va="center", fontsize=20, fontweight="bold",
+            ha="center", va="center", fontsize=13, fontweight="bold",
             color=TITLE)
     ax.text(0, -0.18, "of extract  (w/w)",
             ha="center", va="center", fontsize=9.5, color=SUB_INK)
 
     ax.set_xlim(-1.4, 1.4); ax.set_ylim(-1.4, 1.4)
     ax.set_aspect("equal")
-    ax.set_title("A", fontsize=14, fontweight="bold", color=TITLE,
+    ax.set_title("A", fontsize=12, fontweight="bold", color=TITLE,
                  pad=10, loc="left")
 
     band_r = 1.0 - 0.36 / 2
@@ -194,7 +194,7 @@ def render(dpi: int, out: Path) -> None:
         ax.spines[sp].set_visible(False)
     ax.spines["bottom"].set_color(MUTED)
     ax.spines["bottom"].set_linewidth(0.8)
-    ax.set_title("B", fontsize=14, fontweight="bold", color=TITLE,
+    ax.set_title("B", fontsize=12, fontweight="bold", color=TITLE,
                  pad=10, loc="left")
 
     leg_handles = [
@@ -234,9 +234,9 @@ def render(dpi: int, out: Path) -> None:
 
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--dpi", type=int, default=600)
+    ap.add_argument("--dpi", type=int, default=300)
     ap.add_argument("--out", type=Path,
-                    default=ROOT / "figures" / "Fig3_fatty_acid_600dpi.tif")
+                    default=ROOT / "figures" / "Fig3_fatty_acid.tif")
     args = ap.parse_args()
     render(args.dpi, args.out)
 

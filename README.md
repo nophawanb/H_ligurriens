@@ -35,22 +35,12 @@ pip install numpy pandas matplotlib scipy openpyxl matplotlib-venn adjustText Pi
 
 ## Usage
 
-Each script is self-contained and writes 600-dpi TIFFs (LZW-compressed) to a `figures/`
+Each script is self-contained and writes PLOS-ready 300-dpi TIFFs (LZW-compressed, <=2250x2625 px) to a `figures/`
 directory (created automatically). Run any script directly:
 
 ```bash
 python3 scripts/make_fig4_hacat_mtt_hires.py
 python3 scripts/stats_analysis.py
-```
-
-**Figure 1 (composite) run order** — the Fig 1 composite embeds the
-volcano and scatter as panels C and D, so render those first:
-
-```bash
-python3 scripts/make_fig1_volcano_hires.py --no-heading \
-        --out figures/_embed_volcano_noheading.tif
-python3 scripts/make_fig2_scatter_hires.py
-python3 scripts/make_fig1_proteome_hires.py
 ```
 
 Most scripts accept `--dpi` and `--out`; the volcano additionally accepts

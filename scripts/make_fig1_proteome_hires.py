@@ -1,27 +1,22 @@
 """
-High-resolution re-render of Fig 1 (total-proteome overview composite,
-4 panels A–D) of the *Hemipyrellia ligurriens* larval extracts.
+High-resolution re-render of Fig 1 (total-proteome overview, panels A–B) of the *Hemipyrellia ligurriens* larval extracts.
 
 Faithful copy of `scripts/make_fig1_proteome.py` (identical data,
 computations, layout and styling) with deliberate differences matching
 the established hi-res criteria used across the figure set:
 
   1. Renders at a configurable high DPI (default 600).
-  2. Each panel keeps ONLY its letter label (A / B / C / D). The
-     figure-level master heading (suptitle + methods subtitle) and the
-     four per-panel descriptive titles ("Compartment partition …",
-     "Annotation status …", "Volcano-style plot …", "Pairwise scatter …")
-     are omitted; these belong in the figure caption. In-panel data
-     annotations (Venn counts, union-n, bar %, legend strip) are KEPT.
-  3. Panels C and D embed HEADINGLESS source renders so each panel is
-     itself clean:
-        C ← figures/_embed_volcano_noheading.tif
-            (make_fig1_volcano_hires.py --no-heading)
-        D ← figures/Fig2_scatter_600dpi.tif
-            (make_fig2_scatter_hires.py — already headingless / no legend)
+  2. Two panels only, each with its letter label (A Venn / B annotation).
+     The volcano and pairwise scatter (formerly panels C/D of a tall
+     composite) are now SEPARATE standalone figures, as a 4-panel
+     composite cannot fit a single PLOS-sized figure. Master heading and
+     descriptive panel titles are omitted (they belong in the caption);
+     in-panel data annotations (Venn counts, union-n, bar %, legend) KEPT.
+  3. PLOS-compliant output: figsize fits within 7.5 x 8.75 in so that at
+     300 dpi the TIFF is <= 2250 x 2625 px with 8-12 pt text.
   4. Uses repo-relative paths (the original hard-codes another machine's
      absolute path) and writes a SEPARATE output file
-     (`figures/Fig1_proteome_overview_600dpi.tif`), never touching the
+     (`figures/Fig1_proteome_overview.tif`), never touching the
      320-dpi original consumed downstream.
 
 Usage:
@@ -44,7 +39,7 @@ ROOT = Path(__file__).resolve().parent.parent
 SRC  = ROOT / "Supplementary.xlsx"
 # Embedded panel sources: headingless high-res renders.
 PANEL_C_SRC = ROOT / "figures" / "_embed_volcano_noheading.tif"
-PANEL_D_SRC = ROOT / "figures" / "Fig2_scatter_600dpi.tif"
+PANEL_D_SRC = ROOT / "figures" / "Fig2_scatter.tif"
 
 # Fallbacks to the original 320-dpi renders if the headingless sources
 # are not present (keeps the script runnable standalone).
@@ -116,7 +111,7 @@ TITLE_NAVY = "#0F1E33"
 DIVIDER    = "#D8DCE3"
 
 SUBTITLE_FS      = 10
-PANEL_LABEL_FS   = 18
+PANEL_LABEL_FS   = 12
 VENN_COUNT_FS    = 14
 VENN_PCT_FS      = 9
 VENN_SETLABEL_FS = 11
@@ -295,23 +290,23 @@ def render(dpi: int, out: Path) -> None:
         "axes.titleweight": "bold",
     })
 
-    fig = plt.figure(figsize=(13.0, 29.0), dpi=dpi)
+    # Two-panel overview (A Venn + B annotation). The volcano and pairwise
+    # scatter — formerly panels C/D of a tall composite — are now separate
+    # standalone figures (they cannot fit a single PLOS-sized figure).
+    fig = plt.figure(figsize=(7.5, 4.0), dpi=dpi)
     fig.patch.set_facecolor("white")
-    # Master heading (suptitle + methods subtitle) omitted (per request).
 
     gs = fig.add_gridspec(
-        nrows=4, ncols=2,
-        width_ratios=[1.0, 1.0],
-        height_ratios=[0.55, 0.06, 2.40, 2.40],
-        wspace=0.22, hspace=0.22,
-        left=0.06, right=0.97, top=0.965, bottom=0.02,
+        nrows=2, ncols=2,
+        width_ratios=[1.0, 1.1],
+        height_ratios=[1.0, 0.12],
+        wspace=0.28, hspace=0.32,
+        left=0.04, right=0.97, top=0.92, bottom=0.05,
     )
 
     ax_a      = fig.add_subplot(gs[0, 0])
     ax_b      = fig.add_subplot(gs[0, 1])
     ax_legend = fig.add_subplot(gs[1, :])
-    ax_c      = fig.add_subplot(gs[2, :])
-    ax_d      = fig.add_subplot(gs[3, :])
 
     venn_partition(ax_a, d["we_only"], d["both"], d["es_only"],
                    WE_ONLY_PCT_F, BOTH_PCT_F, ES_ONLY_PCT_F, "full proteome")
@@ -319,10 +314,8 @@ def render(dpi: int, out: Path) -> None:
                      char_pcts=[WE_CHAR_PCT, ES_CHAR_PCT],
                      unchar_pcts=[WE_UNCHAR_PCT, ES_UNCHAR_PCT],
                      totals=[d["we_total"], d["es_total"]])
-    embed_image(ax_c, PANEL_C_SRC, PANEL_C_FALLBACK)
-    embed_image(ax_d, PANEL_D_SRC, PANEL_D_FALLBACK)
 
-    for ax, letter in [(ax_a, "A"), (ax_b, "B"), (ax_c, "C"), (ax_d, "D")]:
+    for ax, letter in [(ax_a, "A"), (ax_b, "B")]:
         ax.text(-0.10, 1.07, letter, transform=ax.transAxes,
                 ha="left", va="center",
                 fontsize=PANEL_LABEL_FS, fontweight="bold", color=TITLE_NAVY)
@@ -330,11 +323,11 @@ def render(dpi: int, out: Path) -> None:
     ax_legend.axis("off")
     swatch_y, swatch_h, swatch_w = 0.55, 0.45, 0.018
     items = [
-        (0.06, C_WE,     "WE only"),
-        (0.18, C_SHARED, "Shared (WE ∩ ES)"),
-        (0.36, C_ES,     "ES only"),
-        (0.54, C_CHAR,   "Characterized"),
-        (0.72, C_UNCHAR, "Uncharacterized"),
+        (0.03, C_WE,     "WE only"),
+        (0.14, C_SHARED, "Shared (WE ∩ ES)"),
+        (0.42, C_ES,     "ES only"),
+        (0.58, C_CHAR,   "Characterized"),
+        (0.78, C_UNCHAR, "Uncharacterized"),
     ]
     for x, color, label in items:
         ax_legend.add_patch(Rectangle(
@@ -360,9 +353,9 @@ def render(dpi: int, out: Path) -> None:
 
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--dpi", type=int, default=600)
+    ap.add_argument("--dpi", type=int, default=300)
     ap.add_argument("--out", type=Path,
-                    default=ROOT / "figures" / "Fig1_total_proteome_characterization_600dpi.tif")
+                    default=ROOT / "figures" / "Fig1.tif")
     args = ap.parse_args()
     render(args.dpi, args.out)
 

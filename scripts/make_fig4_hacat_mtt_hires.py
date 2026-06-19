@@ -13,7 +13,7 @@ matching the established hi-res criteria used for Fig 1 / Fig 2 / Fig 3:
      as they are required to read the plot (not redundant overlays).
   3. Uses repo-relative paths (the original hard-codes another machine's
      absolute path) and writes a SEPARATE output file
-     (`figures/Fig4_hacat_mtt_600dpi.tif`), never touching the 320-dpi
+     (`figures/Fig4_hacat_mtt.tif`), never touching the 320-dpi
      `figures/Fig4_hacat_mtt.png` consumed downstream.
 
 Usage:
@@ -103,7 +103,7 @@ def render(dpi: int, out: Path) -> None:
         "ps.fonttype": 42,
     })
 
-    fig = plt.figure(figsize=(11.5, 7.0), dpi=dpi)
+    fig = plt.figure(figsize=(7.5, 4.6), dpi=dpi)
     fig.patch.set_facecolor("white")
 
     # NOTE: master suptitle + subtitle methods line intentionally
@@ -189,9 +189,9 @@ def render(dpi: int, out: Path) -> None:
 
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--dpi", type=int, default=600)
+    ap.add_argument("--dpi", type=int, default=300)
     ap.add_argument("--out", type=Path,
-                    default=ROOT / "figures" / "Fig4_hacat_mtt_viability_600dpi.tif")
+                    default=ROOT / "figures" / "Fig4_hacat_mtt_viability.tif")
     args = ap.parse_args()
     render(args.dpi, args.out)
 

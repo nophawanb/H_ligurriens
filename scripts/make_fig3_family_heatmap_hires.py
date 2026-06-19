@@ -12,7 +12,7 @@ matching the established hi-res criteria used for Fig 1 / Fig 2:
      subtitle statistics line beneath it (these belong in the caption).
   3. Uses repo-relative paths (the original hard-codes another machine's
      absolute path) and writes a SEPARATE output file
-     (`figures/Fig3_family_heatmap_600dpi.tif`), never touching the
+     (`figures/Fig3_family_heatmap.tif`), never touching the
      320-dpi `figures/Fig3_family_heatmap.png` consumed downstream.
 
 Usage:
@@ -223,9 +223,9 @@ def render(dpi: int, out: Path) -> None:
         "ps.fonttype": 42,
     })
 
-    fig = plt.figure(figsize=(11.0, 12.0), dpi=dpi)
+    fig = plt.figure(figsize=(7.5, 8.5), dpi=dpi)
     fig.patch.set_facecolor("white")
-    fig.set_size_inches(11.5, 13.0)
+    fig.set_size_inches(7.5, 8.5)
     gs = gridspec.GridSpec(
         nrows=3, ncols=2,
         width_ratios=[1.0, 0.26],
@@ -398,9 +398,9 @@ def render(dpi: int, out: Path) -> None:
 
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--dpi", type=int, default=600)
+    ap.add_argument("--dpi", type=int, default=300)
     ap.add_argument("--out", type=Path,
-                    default=ROOT / "figures" / "Fig3_family_heatmap_600dpi.tif")
+                    default=ROOT / "figures" / "Fig3_family_heatmap.tif")
     args = ap.parse_args()
     render(args.dpi, args.out)
 
