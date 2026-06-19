@@ -35,7 +35,7 @@ pip install numpy pandas matplotlib scipy openpyxl matplotlib-venn adjustText Pi
 
 ## Usage
 
-Each script is self-contained and writes 600-dpi PNGs to a `figures/`
+Each script is self-contained and writes 600-dpi TIFFs (LZW-compressed) to a `figures/`
 directory (created automatically). Run any script directly:
 
 ```bash
@@ -48,7 +48,7 @@ volcano and scatter as panels C and D, so render those first:
 
 ```bash
 python3 scripts/make_fig1_volcano_hires.py --no-heading \
-        --out figures/_embed_volcano_noheading.png
+        --out figures/_embed_volcano_noheading.tif
 python3 scripts/make_fig2_scatter_hires.py
 python3 scripts/make_fig1_proteome_hires.py
 ```

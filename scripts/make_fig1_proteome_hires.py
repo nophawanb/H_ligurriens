@@ -15,13 +15,13 @@ the established hi-res criteria used across the figure set:
      annotations (Venn counts, union-n, bar %, legend strip) are KEPT.
   3. Panels C and D embed HEADINGLESS source renders so each panel is
      itself clean:
-        C ← figures/_embed_volcano_noheading.png
+        C ← figures/_embed_volcano_noheading.tif
             (make_fig1_volcano_hires.py --no-heading)
-        D ← figures/Fig2_scatter_600dpi.png
+        D ← figures/Fig2_scatter_600dpi.tif
             (make_fig2_scatter_hires.py — already headingless / no legend)
   4. Uses repo-relative paths (the original hard-codes another machine's
      absolute path) and writes a SEPARATE output file
-     (`figures/Fig1_proteome_overview_600dpi.png`), never touching the
+     (`figures/Fig1_proteome_overview_600dpi.tif`), never touching the
      320-dpi original consumed downstream.
 
 Usage:
@@ -43,8 +43,8 @@ from matplotlib_venn import venn2, venn2_circles
 ROOT = Path(__file__).resolve().parent.parent
 SRC  = ROOT / "Supplementary.xlsx"
 # Embedded panel sources: headingless high-res renders.
-PANEL_C_SRC = ROOT / "figures" / "_embed_volcano_noheading.png"
-PANEL_D_SRC = ROOT / "figures" / "Fig2_scatter_600dpi.png"
+PANEL_C_SRC = ROOT / "figures" / "_embed_volcano_noheading.tif"
+PANEL_D_SRC = ROOT / "figures" / "Fig2_scatter_600dpi.tif"
 
 # Fallbacks to the original 320-dpi renders if the headingless sources
 # are not present (keeps the script runnable standalone).
@@ -347,7 +347,9 @@ def render(dpi: int, out: Path) -> None:
 
     out.parent.mkdir(parents=True, exist_ok=True)
     plt.savefig(out, dpi=dpi, bbox_inches="tight",
-                facecolor="white", edgecolor="none")
+                facecolor="white", edgecolor="none",
+                pil_kwargs=({"compression": "tiff_lzw"}
+                if str(out).lower().endswith((".tif", ".tiff")) else {}))
     plt.close()
 
     from PIL import Image
@@ -360,7 +362,7 @@ def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--dpi", type=int, default=600)
     ap.add_argument("--out", type=Path,
-                    default=ROOT / "figures" / "Fig1_total_proteome_characterization_600dpi.png")
+                    default=ROOT / "figures" / "Fig1_total_proteome_characterization_600dpi.tif")
     args = ap.parse_args()
     render(args.dpi, args.out)
 

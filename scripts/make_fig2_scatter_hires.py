@@ -10,7 +10,7 @@ use as a composed panel / for journals that set titles and keys in the
 caption rather than on the artwork).
 
 Non-destructive: writes a separate output file (default
-`figures/Fig2_scatter_600dpi.png`) and never touches the 320-dpi
+`figures/Fig2_scatter_600dpi.tif`) and never touches the 320-dpi
 `figures/Fig2_scatter.png` consumed by the HTML pipeline.
 
 Usage:
@@ -131,7 +131,10 @@ def render(df: pd.DataFrame, dpi: int, out: Path,
     cb.ax.tick_params(labelsize=tick_fs)
     ax.grid(alpha=0.15, ls=":")
     fig.tight_layout()
-    fig.savefig(out, dpi=dpi, facecolor="white")
+    out.parent.mkdir(parents=True, exist_ok=True)
+    fig.savefig(out, dpi=dpi, facecolor="white",
+                pil_kwargs=({"compression": "tiff_lzw"}
+                if str(out).lower().endswith((".tif", ".tiff")) else {}))
     plt.close(fig)
 
     from PIL import Image
@@ -145,7 +148,7 @@ def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--dpi", type=int, default=600)
     ap.add_argument("--out", type=Path,
-                    default=FIG_DIR / "Fig2_scatter_600dpi.png")
+                    default=FIG_DIR / "Fig2_scatter_600dpi.tif")
     ap.add_argument("--label-fontsize", type=float, default=15)
     ap.add_argument("--tick-fontsize", type=float, default=13)
     args = ap.parse_args()

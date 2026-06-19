@@ -12,7 +12,7 @@ matching the established hi-res criteria used for Fig 1 / Fig 2:
      subtitle statistics line beneath it (these belong in the caption).
   3. Uses repo-relative paths (the original hard-codes another machine's
      absolute path) and writes a SEPARATE output file
-     (`figures/Fig3_family_heatmap_600dpi.png`), never touching the
+     (`figures/Fig3_family_heatmap_600dpi.tif`), never touching the
      320-dpi `figures/Fig3_family_heatmap.png` consumed downstream.
 
 Usage:
@@ -384,7 +384,9 @@ def render(dpi: int, out: Path) -> None:
 
     out.parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(out, dpi=dpi, bbox_inches="tight",
-                facecolor="white", edgecolor="none")
+                facecolor="white", edgecolor="none",
+                pil_kwargs=({"compression": "tiff_lzw"}
+                if str(out).lower().endswith((".tif", ".tiff")) else {}))
     plt.close(fig)
 
     from PIL import Image
@@ -398,7 +400,7 @@ def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--dpi", type=int, default=600)
     ap.add_argument("--out", type=Path,
-                    default=ROOT / "figures" / "Fig3_family_heatmap_600dpi.png")
+                    default=ROOT / "figures" / "Fig3_family_heatmap_600dpi.tif")
     args = ap.parse_args()
     render(args.dpi, args.out)
 

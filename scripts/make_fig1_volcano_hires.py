@@ -8,7 +8,7 @@ DPI (default 600) with enlarged axis-label and tick-label fonts for
 figures destined for print where small text must remain legible.
 
 Non-destructive: writes a separate output file (default
-`figures/Fig1_volcano_600dpi.png`) and never touches the 320-dpi
+`figures/Fig1_volcano_600dpi.tif`) and never touches the 320-dpi
 `figures/Fig1_volcano.png` consumed by the HTML pipeline.
 
 Usage:
@@ -218,7 +218,10 @@ def render(df: pd.DataFrame, dpi: int, out: Path,
     ax.legend(loc="lower right", fontsize=11, frameon=True, framealpha=0.9,
               handletextpad=0.4, edgecolor="#ddd")
     fig.tight_layout()
-    fig.savefig(out, dpi=dpi, facecolor="white")
+    out.parent.mkdir(parents=True, exist_ok=True)
+    fig.savefig(out, dpi=dpi, facecolor="white",
+                pil_kwargs=({"compression": "tiff_lzw"}
+                if str(out).lower().endswith((".tif", ".tiff")) else {}))
     plt.close(fig)
 
     from PIL import Image
@@ -232,7 +235,7 @@ def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--dpi", type=int, default=600)
     ap.add_argument("--out", type=Path,
-                    default=FIG_DIR / "Fig1_volcano_600dpi.png")
+                    default=FIG_DIR / "Fig1_volcano_600dpi.tif")
     ap.add_argument("--label-fontsize", type=float, default=16,
                     help="axis x/y label font size (default 16; orig 12)")
     ap.add_argument("--tick-fontsize", type=float, default=14,
