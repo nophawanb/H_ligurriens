@@ -124,38 +124,25 @@ def render(dpi: int, out: Path) -> None:
     ax = fig.add_subplot(gs[0, 0])
     ax.pie(sizes, colors=colors, startangle=90, counterclock=False,
            wedgeprops=dict(width=0.36, edgecolor="white", linewidth=2.2))
-    ax.text(0, 0.18, "Total identified FA",
-            ha="center", va="center", fontsize=10, color=SUB_INK)
+    ax.text(0, 0.20, "Identified FA",
+            ha="center", va="center", fontsize=9, color=SUB_INK)
     ax.text(0, 0.00, f"{total_fa:.2f} %",
             ha="center", va="center", fontsize=13, fontweight="bold",
             color=TITLE)
-    ax.text(0, -0.18, "of extract  (w/w)",
-            ha="center", va="center", fontsize=9.5, color=SUB_INK)
+    ax.text(0, -0.20, "of extract (w/w)",
+            ha="center", va="center", fontsize=9, color=SUB_INK)
 
     ax.set_xlim(-1.4, 1.4); ax.set_ylim(-1.4, 1.4)
     ax.set_aspect("equal")
     ax.set_title("A", fontsize=12, fontweight="bold", color=TITLE,
                  pad=10, loc="left")
 
-    band_r = 1.0 - 0.36 / 2
-    cum = 0.0
-    for cls, val in zip(labels, sizes):
-        frac_mid = (cum + val / 2) / sum(sizes)
-        theta = 90 - 360 * frac_mid
-        rad = np.deg2rad(theta)
-        tx, ty = band_r * np.cos(rad), band_r * np.sin(rad)
-        is_nonfa = (cls == "Non-FA fraction")
-        # SFA/MUFA/PUFA wedge labels omitted (small arcs overlap; the
-        # SFA/MUFA/PUFA % are already given in the panel B legend). Only
-        # the large Non-FA wedge is labelled in-place.
-        if is_nonfa:
-            ax.text(tx, ty + 0.05, cls,
-                    ha="center", va="center", fontsize=10, color=SUB_INK,
-                    fontweight="bold", fontstyle="italic", zorder=4)
-            ax.text(tx, ty - 0.07, f"{val:.2f} %",
-                    ha="center", va="center", fontsize=9.5, color=SUB_INK,
-                    zorder=4)
-        cum += val
+    # Wedge labels omitted (SFA/MUFA/PUFA % are given in the panel B
+    # legend). The large Non-FA fraction is labelled BELOW the donut so it
+    # never overlaps the ring.
+    ax.text(0, -1.30, f"Non-FA fraction: {non_fa:.2f} %",
+            ha="center", va="center", fontsize=9, color=SUB_INK,
+            fontstyle="italic")
 
 
     # --------- Panel B: ALL 26 fatty acids ---------
