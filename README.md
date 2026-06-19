@@ -15,15 +15,17 @@ the processed data; no values are hand-edited.
 .
 ├── Supplementary.xlsx       MaxQuant proteinGroups output (raw input)
 └── scripts/
-    ├── make_fig1_proteome_hires.py        Fig 1 — total-proteome composite (A–D)
-    ├── make_fig1_volcano_hires.py         Fig 1 panel C — differential-abundance volcano
-    ├── make_fig2_scatter_hires.py         Fig 1 panel D — pairwise ES-vs-WE scatter
+    ├── make_fig1_proteome_hires.py        Fig 1 — proteome overview (A Venn · B annotation)
     ├── make_fig2_lowmw_combined_hires.py   Fig 2 — < 20 kDa overview + family composition
-    ├── make_fig3_family_heatmap_hires.py   Fig 3 — family composition × compartment
     ├── make_fig4_fatty_acid_hires.py      Fig 3 — fatty-acid composition (GC-MS)
     ├── make_fig4_hacat_mtt_hires.py       Fig 4 — HaCaT MTT cytocompatibility
+    ├── make_fig1_volcano_hires.py         Fig 5 — differential-abundance volcano
+    ├── make_fig2_scatter_hires.py         Fig 6 — pairwise ES-vs-WE scatter
+    ├── make_fig3_family_heatmap_hires.py   Fig 7 — family composition × compartment
     └── stats_analysis.py                  Inferential statistics (all assays)
 ```
+
+All figures render PLOS-ready 300-dpi TIFFs (≤ 2250 × 2625 px, 8–12 pt text).
 
 ## Requirements
 

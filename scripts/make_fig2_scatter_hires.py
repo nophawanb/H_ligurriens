@@ -148,7 +148,7 @@ def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--dpi", type=int, default=300)
     ap.add_argument("--out", type=Path,
-                    default=FIG_DIR / "Fig2_scatter.tif")
+                    default=FIG_DIR / "Fig6.tif")
     ap.add_argument("--label-fontsize", type=float, default=12)
     ap.add_argument("--tick-fontsize", type=float, default=10)
     args = ap.parse_args()

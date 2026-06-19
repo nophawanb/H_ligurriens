@@ -235,7 +235,7 @@ def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--dpi", type=int, default=300)
     ap.add_argument("--out", type=Path,
-                    default=FIG_DIR / "Fig1_volcano.tif")
+                    default=FIG_DIR / "Fig5.tif")
     ap.add_argument("--label-fontsize", type=float, default=12,
                     help="axis x/y label font size (default 16; orig 12)")
     ap.add_argument("--tick-fontsize", type=float, default=11,

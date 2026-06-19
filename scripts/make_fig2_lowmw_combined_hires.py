@@ -574,7 +574,7 @@ def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--dpi", type=int, default=300)
     ap.add_argument("--out", type=Path,
-                    default=ROOT / "figures" / "Fig2_lowmw_subset_family_composition.tif")
+                    default=ROOT / "figures" / "Fig2.tif")
     args = ap.parse_args()
     render(args.dpi, args.out)
 
