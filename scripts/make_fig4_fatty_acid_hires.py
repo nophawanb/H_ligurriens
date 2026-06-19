@@ -110,9 +110,9 @@ def render(dpi: int, out: Path) -> None:
     fig.patch.set_facecolor("white")
     gs = gridspec.GridSpec(
         nrows=1, ncols=2,
-        width_ratios=[0.60, 1.00],
-        wspace=0.30,
-        left=0.04, right=0.97, top=0.92, bottom=0.06,
+        width_ratios=[0.50, 1.00],
+        wspace=0.55,
+        left=0.02, right=0.985, top=0.92, bottom=0.06,
     )
 
     # --------- Panel A: SFA / MUFA / PUFA + Non-FA donut ---------
@@ -145,20 +145,18 @@ def render(dpi: int, out: Path) -> None:
         rad = np.deg2rad(theta)
         tx, ty = band_r * np.cos(rad), band_r * np.sin(rad)
         is_nonfa = (cls == "Non-FA fraction")
-        text_col = SUB_INK if is_nonfa else "white"
-        ax.text(tx, ty + 0.05, cls,
-                ha="center", va="center", fontsize=10.5, color=text_col,
-                fontweight="bold",
-                fontstyle="italic" if is_nonfa else "normal", zorder=4)
-        ax.text(tx, ty - 0.07, f"{val:.2f} %",
-                ha="center", va="center", fontsize=10, color=text_col,
-                fontweight="bold" if not is_nonfa else "normal", zorder=4)
+        # SFA/MUFA/PUFA wedge labels omitted (small arcs overlap; the
+        # SFA/MUFA/PUFA % are already given in the panel B legend). Only
+        # the large Non-FA wedge is labelled in-place.
+        if is_nonfa:
+            ax.text(tx, ty + 0.05, cls,
+                    ha="center", va="center", fontsize=10, color=SUB_INK,
+                    fontweight="bold", fontstyle="italic", zorder=4)
+            ax.text(tx, ty - 0.07, f"{val:.2f} %",
+                    ha="center", va="center", fontsize=9.5, color=SUB_INK,
+                    zorder=4)
         cum += val
 
-    ax.text(0.5, -0.04,
-            "% w/w of total extract  ·  identified FA vs non-FA residual",
-            transform=ax.transAxes, ha="center", va="top",
-            fontsize=9.0, color=SUB_INK, clip_on=False)
 
     # --------- Panel B: ALL 26 fatty acids ---------
     ax = fig.add_subplot(gs[0, 1])
@@ -184,7 +182,7 @@ def render(dpi: int, out: Path) -> None:
                        zorder=1)
 
     ax.set_yticks(y)
-    ax.set_yticklabels(names_o, fontsize=9.0, color=INK)
+    ax.set_yticklabels(names_o, fontsize=8.0, color=INK)
     ax.set_xlim(0, max(vals_o) * 1.18)
     ax.set_xlabel("% w/w of total extract", fontsize=10.5, color=INK,
                   labelpad=6)
